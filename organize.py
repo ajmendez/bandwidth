@@ -9,7 +9,7 @@ from matplotlib.dates import date2num, num2date
 
 
 
-DATAFILE = '~/dev/network/traffic2'
+DATAFILE = '~/dev/bandwidth/data/traffic2'
 
 
 with open(os.path.expanduser(DATAFILE),'r') as f:
