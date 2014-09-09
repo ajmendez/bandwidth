@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     s = soup.find('div',{'class':'cui-usage-bar'})
     try:
-        total = s.find('span').get('data-used')
+        total = int(s.find('span').get('data-used'))
     except:
         total = -1
     try:
