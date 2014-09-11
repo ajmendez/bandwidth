@@ -15,9 +15,17 @@ casper.start(address, function() {
 });
 
 casper.then(function() {
-    fs.write(bwlog, Date.now()+' : '+this.getHTML('span[class="cui-meter-details-info"]')+'\n', 'a');
+    try {
+        // Sometimes catches preload -- so wait?!
+        this.wait(2000, function() {
+            fs.write(bwlog, Date.now()+' : '+this.getHTML('span[class="cui-meter-details-info"]')+'\n', 'a');
+        });
+    } catch(error) {
+        console.log(error);
+        console.log(this.getHTML());
+    }
 });
 
 casper.run(function () {
-    this.echo('message sent').exit();
+    this.echo('Done!').exit();
 });
