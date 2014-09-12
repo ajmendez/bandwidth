@@ -2,9 +2,21 @@
 // Mendez 2014
 var casper = require('casper').create();
 var fs = require('fs')
-var pw = fs.read("/home/ajmendez/.limited/comcast.pw");
-var user = fs.read("/home/ajmendez/.limited/comcast.user");
-var bwlog = "/home/ajmendez/data/bandwidth/archive.txt";
+
+var getDir = function() {
+    path1 = '/home/ajmendez';
+    path2 = '/Users/ajmendez';
+    if (fs.exists(path1)) {
+        return path1;
+    } else {
+        return path2;
+    };
+};
+
+var dir = getDir()
+var pw = fs.read(dir+"/.limited/comcast.pw");
+var user = fs.read(dir+"/.limited/comcast.user");
+var bwlog = dir+"/data/bandwidth/archive.txt";
 var address = 'https://customer.comcast.com/MyServices/Internet/?ajax=1';
 
 casper.start(address, function() {
