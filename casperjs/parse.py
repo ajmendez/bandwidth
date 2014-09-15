@@ -26,7 +26,7 @@ def parse():
         pylab.plot(times[:-1],np.diff(values), 'sk')
         dateticks('%Y.%m.%d')
         
-        pylab.savefig('values.png')
+        pylab.savefig(os.path.expanduser('~/data/bandwidth/values.png'))
 
 if __name__ == '__main__':
     parse()
