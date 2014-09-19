@@ -7,6 +7,7 @@ import pylab
 import numpy as np
 from datetime import datetime
 from pysurvey.plot import setup, dateticks
+from matplotlib.dates import date2num
 
 FILENAME = os.path.expanduser('~/data/bandwidth/archive.txt')
 PLOT = ('plot' in sys.argv)
@@ -18,15 +19,23 @@ def parse():
     print 'Last Time: {} Value: {}'.format(datetime.now() - times[-1],values[-1])
     
     if PLOT:
-        setup(figsize=(12,6), subplt=(1,2,1))
+        setup(figsize=(8,8), subplt=(2,2,1))
         pylab.plot(times,values)
         dateticks('%Y.%m.%d')
         
-        setup(subplt=(1,2,2))
+        setup(subplt=(2,2,3))
         pylab.plot(times[:-1],np.diff(values), 'sk')
         dateticks('%Y.%m.%d')
+        
+        setup(subplt=(2,2,2))
+        tmp = (date2num(times[:-1]) % 1)*24.0
+        pylab.hist(tmp, bins=np.arange(0,25,2), weights=np.diff(values))
+        # pylab.plot(tmp, np.diff(values), 'sk')
+        # dateticks('%Y.%m.%d')
         
         pylab.savefig(os.path.expanduser('~/data/bandwidth/values.png'))
 
 if __name__ == '__main__':
+    from pysurvey.util import setup_stop
+    setup_stop()
     parse()
