@@ -17,7 +17,7 @@ def parse():
     times = np.array([datetime.fromtimestamp(int(x.split(':')[0].strip())/1000.0) for x in data])
     values = np.array([int(x.split(':')[1].split('G')[0].strip()) for x in data])
     print 'Last Time: {} Value: {}'.format(datetime.now() - times[-1],values[-1])
-    
+
     if PLOT:
         setup(figsize=(8,8), subplt=(2,2,1))
         pylab.plot(times,values)
