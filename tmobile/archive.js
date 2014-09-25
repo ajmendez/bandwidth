@@ -1,15 +1,9 @@
 // casper
 // Mendez 2014
-// var casper = require('casper').create({
-//     verbose=true,
-//     logLevel="debug"
-// });
 var casper = require('casper').create();
 // casper.options.pageSettings={javascriptEnabled:false};
-casper.options.verbose=true;
-casper.options.logLevel='debug';
-
-// var x = require('casper').selectXPath;
+// casper.options.verbose=true;
+// casper.options.logLevel='debug';
 var fs = require('fs')
 
 var getDir = function() {
