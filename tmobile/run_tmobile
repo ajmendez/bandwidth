@@ -1,0 +1,17 @@
+#!/bin/bash
+
+export PATH=/home/ajmendez/bin:$PATH
+echo '----'
+date
+
+
+
+
+# retry n times
+n=0
+until [ $n -ge 3 ]; do
+    casperjs ~/dev/bandwidth/tmobile/archive.js
+    [  $? -eq 0 ] && break
+    n=$[$n+1]
+    sleep 10
+done
