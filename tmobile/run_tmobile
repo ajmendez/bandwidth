@@ -15,3 +15,4 @@ until [ $n -ge 3 ]; do
     n=$[$n+1]
     sleep 10
 done
+python ~/dev/bandwidth/tmobile/parse.py

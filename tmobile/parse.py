@@ -58,7 +58,7 @@ def parse():
     megabytes = [o[1]for o in out]
 
     with open(OUTFILE, 'w') as outfile:
-        fmt = '{0:} : {1[0]: 4d} Min {1[1]: 6.1f} MB'
+        fmt = '{0:} : {1[0]: 4d} Min {1[1]: 6.1f} MB\n'
         for d,o in zip(dates,out):
             outfile.write(fmt.format(d, o))
     
