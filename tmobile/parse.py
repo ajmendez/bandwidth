@@ -52,15 +52,16 @@ def parse():
         data = getsoup(''.join(tmp))
         out.append(data)
             # break
-
+            
+    sdate = [d for d in dates]
     dates = [datetime.fromtimestamp(int(d)/1000) for d in dates]
     minutes = [o[0] for o in out]
     megabytes = [o[1]for o in out]
 
     with open(OUTFILE, 'w') as outfile:
-        fmt = '{0:} : {1[0]: 4d} Min {1[1]: 6.1f} MB\n'
-        for d,o in zip(dates,out):
-            outfile.write(fmt.format(d, o))
+        fmt = '{2:} : {0:} : {1[0]: 4d} Min {1[1]: 6.1f} MB\n'
+        for s,d,o in zip(sdate, dates,out):
+            outfile.write(fmt.format(d, o, s))
     
     
     print len(dates), len(minutes), len(megabytes)
