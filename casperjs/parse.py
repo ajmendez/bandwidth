@@ -15,23 +15,30 @@ def parse():
     with open(FILENAME, 'r') as f:
         data = f.readlines()
     times = np.array([datetime.fromtimestamp(int(x.split(':')[0].strip())/1000.0) for x in data])
-    values = np.array([int(x.split(':')[1].split('G')[0].strip()) for x in data])
+    values = np.array([int(x.split(':')[1].split('G')[0].strip().replace('&lt;','')) for x in data])
     print 'Last Time: {} Value: {}'.format(datetime.now() - times[-1],values[-1])
-
+    
     if PLOT:
         setup(figsize=(8,8), subplt=(2,2,1))
         pylab.plot(times,values)
-        dateticks('%Y.%m.%d')
+        dateticks('%m.%d')
+        
+        x = np.diff(values)
+        ii = np.where(x > 0)
         
         setup(subplt=(2,2,3))
-        pylab.plot(times[:-1],np.diff(values), 'sk')
-        dateticks('%Y.%m.%d')
+        pylab.plot(times[:-1][ii], x[ii], 'sk')
+        dateticks('%m.%d')
         
         setup(subplt=(2,2,2))
         tmp = (date2num(times[:-1]) % 1)*24.0
-        pylab.hist(tmp, bins=np.arange(0,25,2), weights=np.diff(values))
+        pylab.hist(tmp[ii], bins=np.arange(0,25,0.5), weights=x[ii])
         # pylab.plot(tmp, np.diff(values), 'sk')
         # dateticks('%Y.%m.%d')
+
+        setup(subplt=(2,2,4))
+        pylab.hist(date2num(times[:-1][ii]), bins=40, weights=x[ii])
+        dateticks('%m.%d')
         
         pylab.savefig(os.path.expanduser('~/data/bandwidth/values.png'))
 
