@@ -25,7 +25,15 @@ def togb(x):
 
 def getsoup(instring):
     soup = BeautifulSoup(instring)
-    minute, data = [x.text for x in soup.findAll('span', {'class':'home-txt20'})]
+    try:
+        minute, data = [x.text for x in soup.findAll('span', {'class':'home-txt20'})]
+    except Exception as e:
+        minute = [x.text for x in soup.findAll('span', {'class':'home-txt24'})][0]
+        data = [x.text for x in soup.findAll('span', {'class':'home-txt20'})][0]
+        
+        # print e
+        # print soup.prettify()
+        # raise
     return int(minute), togb(data)
 
 

@@ -2,7 +2,7 @@
 import os
 import sys
 import matplotlib
-matplotlib.use('agg')
+# matplotlib.use('agg')
 import pylab
 import numpy as np
 from datetime import datetime
@@ -19,27 +19,37 @@ def parse():
     print 'Last Time: {} Value: {}'.format(datetime.now() - times[-1],values[-1])
     
     if PLOT:
-        setup(figsize=(8,8), subplt=(2,2,1))
-        pylab.plot(times,values)
-        dateticks('%m.%d')
-        
         x = np.diff(values)
         ii = np.where(x > 0)
+        setup(figsize=(8,8))
         
-        setup(subplt=(2,2,3))
-        pylab.plot(times[:-1][ii], x[ii], 'sk')
+        setup(subplt=(2,2,1), subtitle='Monthly Integrated',
+              ylog=True, ylabel='Number', yr=[1e-1, 2e3])
+        pylab.plot(times,values)
+        pylab.plot(times[:-1][ii], x[ii], '.k', linewidth=0)
         dateticks('%m.%d')
         
-        setup(subplt=(2,2,2))
+        setup(subplt=(2,2,3), subtitle='by week')
+        tmp = (date2num(times[:-1]) % 7)
+        pylab.hist(tmp, bins=np.arange(0,7,1), alpha=0.75, linewidth=0)
+        
+        
+        setup(subplt=(2,2,2), xticks=True, subtitle='By hour of the day')
         tmp = (date2num(times[:-1]) % 1)*24.0
-        pylab.hist(tmp[ii], bins=np.arange(0,25,0.5), weights=x[ii])
+        pylab.hist(tmp[ii], bins=np.arange(0,25,1), weights=x[ii],
+                   alpha=0.75, linewidth=0.1, edgecolor='w')
         # pylab.plot(tmp, np.diff(values), 'sk')
         # dateticks('%Y.%m.%d')
-
-        setup(subplt=(2,2,4))
-        pylab.hist(date2num(times[:-1][ii]), bins=40, weights=x[ii])
-        dateticks('%m.%d')
         
+        
+        
+        setup(subplt=(2,2,4), subtitle='By Day')
+        days = np.ceil(np.max(date2num(times[:-1][ii])) - np.min(date2num(times[:-1][ii])))
+        pylab.hist(date2num(times[:-1][ii]), bins=days, weights=x[ii],
+                   alpha=0.75, linewidth=0)
+        dateticks('%m.%d')
+        pylab.tight_layout()
+        pylab.show()
         pylab.savefig(os.path.expanduser('~/data/bandwidth/values.png'))
 
 if __name__ == '__main__':
