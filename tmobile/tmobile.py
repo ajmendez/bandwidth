@@ -16,12 +16,14 @@ with open(os.path.expanduser('~/.limited/tmobile.auth'), 'r') as f:
     user,pw = f.read().strip().split(' ')
 # user,pw = auth('tmobile',['username','password'])
 
+
+driver = 'firefox'
 tmp = dict(
     user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.124 Safari/537.36"
 )
 
 # 
-with Browser('chrome', **tmp) as browser:
+with Browser(driver, **tmp) as browser:
     print 'Loading: {}'.format(address)
     browser.visit(address)
     print 'Here: {}'.format(browser.url)
