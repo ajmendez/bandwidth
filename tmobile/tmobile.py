@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import os
 import time
+import json
 from splinter import Browser
+from datetime import datetime
 # from pymendez import auth
 # from pysurvey.util import setup_stop
 # setup_stop()
@@ -20,6 +22,7 @@ tmp = dict(
 
 # 
 with Browser('chrome', **tmp) as browser:
+    print 'Loading: {}'.format(address)
     browser.visit(address)
     print 'Here: {}'.format(browser.url)
     browser.find_by_id('Login1_txtMSISDN').first.fill(user)
@@ -47,36 +50,30 @@ with Browser('chrome', **tmp) as browser:
     out = []
     for desc,div in zip(browser.find_by_css('div.datausage-mod-date'),
                         browser.find_by_css('div.datausage-mod-desc') ):
-        out.append('{} {}'.format(desc.text, div.text.splitlines()[0]))
-    
+        out.append('{} {}'.format(desc.text, div.text.replace('\n','  ')))
+    for desc, div in zip(browser.find_by_css('div.myaccount-mod-date'),
+                         browser.find_by_css('div.myaccount-mod-desc') ):
+        out.append('{} {}'.format(desc.text, div.text))
     tmp = datetime.now()
     output = dict(
            datenum = int((tmp - datetime(1970, 1, 1)).total_seconds()*1000),
            datestr = tmp.strftime("%Y-%m-%d %H:%M:%S"),
            information = ', '.join(out),
+           list = out,
     )
     
-    
+    print 'Saving'
     with open(outfile,'a') as f:
         f.write('{datenum:d} : {datestr} : {information}\n'.format(**output))
     
-    # raise ValueError()
     
+    jsonfile = outfile.replace('.txt','.json')
+    try:
+        data = json.load(open(jsonfile, 'r'))
+    except:
+        data = []
     
-    # time.sleep(1200)
+    data.append(output)
     
-
-
-#
-#
-# browser = Browser()
-# browser.visit('http://google.com')
-# browser.fill('q', 'splinter - python acceptance testing for web applications')
-# browser.find_by_name('btnG').click()
-#
-# if browser.is_text_present('splinter.cobrateam.info'):
-#     print "Yes, the official website was found!"
-# else:
-#     print "No, it wasn't found... We need to improve our SEO techniques"
-#
-# browser.quit()
+    json.dump(data, open(jsonfile, 'w'), indent=2)
+    
