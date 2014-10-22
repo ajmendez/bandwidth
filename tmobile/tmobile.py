@@ -26,6 +26,7 @@ tmp = dict(
 with Browser(driver, **tmp) as browser:
     print 'Loading: {}'.format(address)
     browser.visit(address)
+    time.sleep(10)
     print 'Here: {}'.format(browser.url)
     browser.find_by_id('Login1_txtMSISDN').first.fill(user)
     # browser.find_by_id('Login1_txtMSISDN').first.type(user, slowly=True)
