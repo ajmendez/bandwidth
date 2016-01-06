@@ -1,0 +1,27 @@
+#!/bin/bash
+
+
+source $HOME/.bashrc
+
+export PATH=$HOME/.local/bin:$PATH
+
+
+pushd ~/tmp > /dev/null
+
+echo "$(date +%s) | $(date)"
+
+
+VNC="$(nc -w1 -z localhost 5999; echo $?)"
+
+if [ "$VNC" -ne "0" ]; then
+	echo 'Starting vnc'
+	USER=ajmendez vncserv
+fi
+
+
+
+export DISPLAY=:99
+echo "$(date +%s) | $(date) | $(DISPLAY=:99 python $HOME/dev/tp.py)" >> $HOME/data/tplink.txt
+DISPLAY=:99 python $HOME/dev/plot_tp.py
+
+popd > /dev/null
