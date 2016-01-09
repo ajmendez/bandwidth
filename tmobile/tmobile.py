@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 import os
+
+import sys
+sys.path.append('/home/ajmendez/.local/lib/python2.7/site-packages')
+
+
 import time
 import json
 from splinter import Browser
@@ -26,19 +31,24 @@ tmp = dict(
 with Browser(driver, **tmp) as browser:
     print 'Loading: {}'.format(address)
     browser.visit(address)
-    time.sleep(10)
+    time.sleep(1)
     print 'Here: {}'.format(browser.url)
-    browser.find_by_id('Login1_txtMSISDN').first.fill(user)
+    
+    browser.find_by_id('msisdn').first.fill(user)
+    # browser.find_by_id('Login1_txtMSISDN').first.fill(user)
     # browser.find_by_id('Login1_txtMSISDN').first.type(user, slowly=True)
     
     print 'Sleeping before next step'
-    time.sleep(10)
-    browser.find_by_id('Login1_txtPassword').first.fill(pw)
+    time.sleep(1)
+    
+    browser.find_by_id('password').first.fill(pw)
+    # browser.find_by_id('Login1_txtPassword').first.fill(pw)
     # browser.find_by_id('Login1_txtPassword').first.type(pw, slowly=True)
     
     print 'Sleeping before next step'
-    time.sleep(10)
-    browser.find_by_id('lnkBtnLogin').first.click()
+    time.sleep(1)
+    browser.find_by_id('primary_button').first.click()
+    # browser.find_by_id('lnkBtnLogin').first.click()
     
     print 'Sleeping before next step'
     time.sleep(10)
